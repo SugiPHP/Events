@@ -1,0 +1,23 @@
+{
+    "name": "sugiphp/events",
+    "type": "library",
+    "description": "Observer design pattern-like events system",
+    "keywords": ["observer", "event", "dispatcher"],
+    "licence": "MIT",
+    "authors": [
+        {
+            "name": "Plamen Popov",
+            "email": "tzappa@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3"
+    },
+    "autoload": {
+        "psr-0": { 
+            "SugiPHP\\Events\\": ""
+        }
+    },
+    "target-dir": "SugiPHP/Events",
+    "minimum-stability": "dev"
+}
