@@ -81,4 +81,24 @@ class EventsTests extends PHPUnit_Framework_TestCase
 		$this->dispatcher->dispatch($this->event);
 		$this->assertEquals(4, $this->eventsDispatched);
 	}
+
+	public function testEventParams()
+	{
+		// creating listener
+		$this->dispatcher->addListener("unit.test", function($e) {
+			$this->eventsDispatched++;
+			$this->assertSame("unit.test", $e->getName());
+			$params = $e->getParams();
+			$this->assertContains("foo", $params);
+			$this->assertContains("foobar", $params);
+			$this->assertArrayHasKey("bar", $params);
+			$this->assertEquals("foobar", $params["bar"]);
+		});
+
+		// firing event
+		$event = new Event("unit.test", array("foo", "bar" => "foobar"));
+		$this->dispatcher->dispatch($event);
+		// check that the event was dispatched
+		$this->assertEquals(1, $this->eventsDispatched);
+	}
 }

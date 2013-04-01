@@ -26,7 +26,7 @@ class Dispatcher
 	 * 
 	 * @param Event $event
 	 */
-	public function dispatch(Event $event)
+	public function dispatch(EventInterface $event)
 	{
 		$eventName = $event->getName();
 		foreach ($this->getListeners($eventName) as $listener) {

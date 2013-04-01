@@ -8,7 +8,7 @@
 
 namespace SugiPHP\Events;
 
-class Event
+class Event implements EventInterface
 {
 	/**
 	 * Event name
@@ -17,19 +17,29 @@ class Event
 	protected $name;
 
 	/**
-	 * Dispatcher who handles event firing
+	 * Dispatcher who handles event firing.
+	 * 
 	 * @var \SugiPHP\Events\Dispatcher
 	 */
 	protected $dispatcher;
 
 	/**
+	 * Some parameters to store in the event.
+	 * 
+	 * @var array
+	 */
+	protected $params;
+
+	/**
 	 * Event constructor.
 	 * 
 	 * @param string $eventName
+	 * @param array $parameters
 	 */
-	public function __construct($eventName)
+	public function __construct($eventName, array $params = array())
 	{
 		$this->name = $eventName;
+		$this->params = $params;
 	}
 
 	/**
@@ -45,11 +55,14 @@ class Event
 	/**
 	 * Sets event name.
 	 * 
-	 * @param string $name
+	 * @param  string $name
+	 * @return Event
 	 */
 	public function setName($name)
 	{
 		$this->name = $name;
+
+		return $this;
 	}
 
 	/**
@@ -65,10 +78,60 @@ class Event
 	/**
 	 * Sets the Dispatcher that dispatches this Event
 	 * 
-	 * @param Dispatcher $dispatcher
+	 * @param  Dispatcher $dispatcher
+	 * @return Event
 	 */
 	public function setDispatcher(Dispatcher $dispatcher)
 	{
 		$this->dispatcher = $dispatcher;
+
+		return $this;
+	}
+
+	/**
+	 * Bind some parameters to the Event.
+	 * 
+	 * @param  array $params
+	 * @return Event
+	 */
+	public function setParams(array $params)
+	{
+		$this->params = $params;
+
+		return $this;
+	}
+
+	/**
+	 * Return all parameters binded to the Event.
+	 *  
+	 * @return array
+	 */
+	public function getParams()
+	{
+		return $this->params;
+	}
+
+	/**
+	 * Binds a param to the Event
+	 * @param  string $name
+	 * @param  mixed $value
+	 * @return Event
+	 */
+	public function setParam($name, $value)
+	{
+		$this->params[$name] = $value;
+
+		return $this;
+	}
+
+	/**
+	 * Return named parameter binded to the Event.
+	 * 
+	 * @param  string $name
+	 * @return mixed
+	 */
+	public function getParam($name)
+	{
+		return isset($this->params[$name]) ? $this->params[$name] : null;
 	}
 }
