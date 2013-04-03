@@ -8,7 +8,7 @@
 
 namespace SugiPHP\Events;
 
-class Event implements EventInterface
+class Event implements EventInterface, \ArrayAccess
 {
 	/**
 	 * Event name
@@ -112,7 +112,8 @@ class Event implements EventInterface
 	}
 
 	/**
-	 * Binds a param to the Event
+	 * Binds a param to the Event.
+	 * 
 	 * @param  string $name
 	 * @param  mixed $value
 	 * @return Event
@@ -134,4 +135,30 @@ class Event implements EventInterface
 	{
 		return isset($this->params[$name]) ? $this->params[$name] : null;
 	}
+
+
+	/*
+	 * ArrayAccess implementation
+	 */
+	
+	public function offsetSet($offset, $value) {
+		if (is_null($offset)) {
+			$this->params[] = $value;
+		} else {
+			$this->params[$offset] = $value;
+		}
+	}
+	
+	public function offsetExists($offset) {
+		return isset($this->params[$offset]);
+	}
+
+	public function offsetUnset($offset) {
+		unset($this->params[$offset]);
+	}
+	
+	public function offsetGet($offset) {
+		return isset($this->params[$offset]) ? $this->params[$offset] : null;
+	}
+
 }
