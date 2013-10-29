@@ -16,14 +16,14 @@ class Dispatcher
 {
 	/**
 	 * All registered event listeners.
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $listeners = array();
 
 	/**
 	 * Notifies registered for that event callback function
-	 * 
+	 *
 	 * @param Event $event
 	 */
 	public function dispatch(EventInterface $event)
@@ -36,7 +36,7 @@ class Dispatcher
 
 	/**
 	 * Registers an event listener.
-	 * 
+	 *
 	 * @param string $eventName
 	 * @param callable $callback
 	 */
@@ -47,7 +47,7 @@ class Dispatcher
 
 	/**
 	 * Gets the listeners of a given event or all listeners.
-	 * 
+	 *
 	 * @param string $eventName
 	 * @return array
 	 */
@@ -68,7 +68,7 @@ class Dispatcher
 	 * Checks event has any registered listeners.
 	 *
 	 * @param string $eventName
-	 * @return bool
+	 * @return boolean
 	 */
 	public function hasListeners($eventName = null)
 	{

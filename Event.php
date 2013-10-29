@@ -18,21 +18,21 @@ class Event implements EventInterface, \ArrayAccess
 
 	/**
 	 * Dispatcher who handles event firing.
-	 * 
+	 *
 	 * @var \SugiPHP\Events\Dispatcher
 	 */
 	protected $dispatcher;
 
 	/**
 	 * Some parameters to store in the event.
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $params;
 
 	/**
 	 * Event constructor.
-	 * 
+	 *
 	 * @param string $eventName
 	 * @param array $parameters
 	 */
@@ -44,7 +44,7 @@ class Event implements EventInterface, \ArrayAccess
 
 	/**
 	 * Gets event name.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getName()
@@ -54,7 +54,7 @@ class Event implements EventInterface, \ArrayAccess
 
 	/**
 	 * Sets event name.
-	 * 
+	 *
 	 * @param  string $name
 	 * @return Event
 	 */
@@ -67,7 +67,7 @@ class Event implements EventInterface, \ArrayAccess
 
 	/**
 	 * Gets the Dispatcher that dispatches this Event
-	 * 
+	 *
 	 * @return Dispatcher
 	 */
 	public function getDispatcher()
@@ -77,7 +77,7 @@ class Event implements EventInterface, \ArrayAccess
 
 	/**
 	 * Sets the Dispatcher that dispatches this Event
-	 * 
+	 *
 	 * @param  Dispatcher $dispatcher
 	 * @return Event
 	 */
@@ -90,7 +90,7 @@ class Event implements EventInterface, \ArrayAccess
 
 	/**
 	 * Bind some parameters to the Event.
-	 * 
+	 *
 	 * @param  array $params
 	 * @return Event
 	 */
@@ -103,7 +103,7 @@ class Event implements EventInterface, \ArrayAccess
 
 	/**
 	 * Return all parameters binded to the Event.
-	 *  
+	 *
 	 * @return array
 	 */
 	public function getParams()
@@ -113,7 +113,7 @@ class Event implements EventInterface, \ArrayAccess
 
 	/**
 	 * Binds a param to the Event.
-	 * 
+	 *
 	 * @param  string $name
 	 * @param  mixed $value
 	 * @return Event
@@ -127,7 +127,7 @@ class Event implements EventInterface, \ArrayAccess
 
 	/**
 	 * Return named parameter binded to the Event.
-	 * 
+	 *
 	 * @param  string $name
 	 * @return mixed
 	 */
@@ -140,24 +140,28 @@ class Event implements EventInterface, \ArrayAccess
 	/*
 	 * ArrayAccess implementation
 	 */
-	
-	public function offsetSet($offset, $value) {
+
+	public function offsetSet($offset, $value)
+	{
 		if (is_null($offset)) {
 			$this->params[] = $value;
 		} else {
 			$this->params[$offset] = $value;
 		}
 	}
-	
-	public function offsetExists($offset) {
+
+	public function offsetExists($offset)
+	{
 		return isset($this->params[$offset]);
 	}
 
-	public function offsetUnset($offset) {
+	public function offsetUnset($offset)
+	{
 		unset($this->params[$offset]);
 	}
-	
-	public function offsetGet($offset) {
+
+	public function offsetGet($offset)
+	{
 		return isset($this->params[$offset]) ? $this->params[$offset] : null;
 	}
 
