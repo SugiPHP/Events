@@ -1,6 +1,8 @@
 Events
 ======
 
+[![Build Status](https://travis-ci.org/SugiPHP/Events.png)](https://travis-ci.org/SugiPHP/Events) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/7d896535-a9e1-487f-ae7e-1039447d9a50/mini.png)](https://insight.sensiolabs.com/projects/7d896535-a9e1-487f-ae7e-1039447d9a50)
+
 Observer design pattern-like events system.
 
 Event
@@ -28,7 +30,7 @@ listeners that are registered with that event and notifies them.
 	$dispatcher = new Dispatcher();
 	// register one or more listeners for one or more events
 	$dispatcher->addListener("user.login", function ($event) {
-		// this function will be executed when an event with name "user.login" will be fired
+		// this function will be executed when an event with name "user.login" is fired
 	});
 
 	// fires an event

@@ -3,7 +3,7 @@
     "type": "library",
     "description": "Observer design pattern-like events system",
     "keywords": ["observer", "event", "dispatcher"],
-    "licence": "MIT",
+    "license": "MIT",
     "authors": [
         {
             "name": "Plamen Popov",
@@ -14,7 +14,7 @@
         "php": ">=5.3"
     },
     "autoload": {
-        "psr-0": { 
+        "psr-0": {
             "SugiPHP\\Events\\": ""
         }
     },
