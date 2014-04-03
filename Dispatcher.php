@@ -8,10 +8,6 @@
 
 namespace SugiPHP\Events;
 
-/**
- * TODO:
- * - removeListener() method
- */
 class Dispatcher
 {
 	/**
@@ -48,7 +44,7 @@ class Dispatcher
 	/**
 	 * Gets the listeners of a given event or all listeners.
 	 *
-	 * @param string $eventName
+	 * @param  string $eventName
 	 * @return array
 	 */
 	public function getListeners($eventName = null)
@@ -67,7 +63,7 @@ class Dispatcher
 	/**
 	 * Checks event has any registered listeners.
 	 *
-	 * @param string $eventName
+	 * @param  string $eventName
 	 * @return boolean
 	 */
 	public function hasListeners($eventName = null)

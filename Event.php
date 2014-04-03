@@ -53,19 +53,6 @@ class Event implements EventInterface, \ArrayAccess
 	}
 
 	/**
-	 * Sets event name.
-	 *
-	 * @param  string $name
-	 * @return Event
-	 */
-	public function setName($name)
-	{
-		$this->name = $name;
-
-		return $this;
-	}
-
-	/**
 	 * Gets the Dispatcher that dispatches this Event
 	 *
 	 * @return Dispatcher
