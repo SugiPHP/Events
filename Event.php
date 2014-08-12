@@ -151,5 +151,4 @@ class Event implements EventInterface, \ArrayAccess
 	{
 		return isset($this->params[$offset]) ? $this->params[$offset] : null;
 	}
-
 }

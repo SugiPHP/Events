@@ -6,12 +6,15 @@
  * @license    http://opensource.org/licenses/mit-license.php (MIT License)
  */
 
-use \SugiPHP\Events\Dispatcher;
-use \SugiPHP\Events\Event;
+namespace SugiPHP\Events\Test;
+
+use SugiPHP\Events\Dispatcher;
+use SugiPHP\Events\Event;
+use PHPUnit_Framework_TestCase;
 
 class EventsTests extends PHPUnit_Framework_TestCase
 {
-	
+
 	public $eventsDispatched;
 	public $dispatcher;
 	public $event;
@@ -30,7 +33,7 @@ class EventsTests extends PHPUnit_Framework_TestCase
 	public function testOneListener()
 	{
 		// creating listener
-		$this->dispatcher->addListener("unit.test", function($e) {
+		$this->dispatcher->addListener("unit.test", function ($e) {
 			$this->eventsDispatched++;
 		});
 		// firing
@@ -42,7 +45,7 @@ class EventsTests extends PHPUnit_Framework_TestCase
 	public function testOneListenerTriggerOtherEver()
 	{
 		// creating listener
-		$this->dispatcher->addListener("unit.test", function($e) {
+		$this->dispatcher->addListener("unit.test", function ($e) {
 			$this->eventsDispatched++;
 		});
 
@@ -53,11 +56,11 @@ class EventsTests extends PHPUnit_Framework_TestCase
 	public function testTwoListeners()
 	{
 		// creating listener
-		$this->dispatcher->addListener("unit.test", function($e) {
+		$this->dispatcher->addListener("unit.test", function ($e) {
 			$this->eventsDispatched++;
 		});
 		// creating second listener for the same event
-		$this->dispatcher->addListener("unit.test", function($e) {
+		$this->dispatcher->addListener("unit.test", function ($e) {
 			$this->eventsDispatched++;
 		});
 
@@ -68,11 +71,11 @@ class EventsTests extends PHPUnit_Framework_TestCase
 	public function testTwoListenersTwoFires()
 	{
 		// creating listener
-		$this->dispatcher->addListener("unit.test", function($e) {
+		$this->dispatcher->addListener("unit.test", function ($e) {
 			$this->eventsDispatched++;
 		});
 		// creating second listener for the same event
-		$this->dispatcher->addListener("unit.test", function($e) {
+		$this->dispatcher->addListener("unit.test", function ($e) {
 			$this->eventsDispatched++;
 		});
 
@@ -85,7 +88,7 @@ class EventsTests extends PHPUnit_Framework_TestCase
 	public function testEventParams()
 	{
 		// creating listener
-		$this->dispatcher->addListener("unit.test", function($e) {
+		$this->dispatcher->addListener("unit.test", function ($e) {
 			$this->eventsDispatched++;
 			$this->assertSame("unit.test", $e->getName());
 			$params = $e->getParams();
