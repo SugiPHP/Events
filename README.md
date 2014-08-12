@@ -1,7 +1,8 @@
 Events
 ======
 
-[![Build Status](https://travis-ci.org/SugiPHP/Events.png)](https://travis-ci.org/SugiPHP/Events) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/7d896535-a9e1-487f-ae7e-1039447d9a50/mini.png)](https://insight.sensiolabs.com/projects/7d896535-a9e1-487f-ae7e-1039447d9a50)
+[![Build Status](https://travis-ci.org/SugiPHP/Events.png)](https://travis-ci.org/SugiPHP/Events)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/SugiPHP/Events/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/SugiPHP/Events/?branch=master)
 
 
 Observer design pattern-like events system.

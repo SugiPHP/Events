@@ -34,7 +34,7 @@ class Event implements EventInterface, \ArrayAccess
 	 * Event constructor.
 	 *
 	 * @param string $eventName
-	 * @param array $parameters
+	 * @param array $params
 	 */
 	public function __construct($eventName, array $params = array())
 	{
