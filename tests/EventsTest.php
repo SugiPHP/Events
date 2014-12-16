@@ -1,7 +1,8 @@
 <?php
 /**
- * @package    SugiPHP
- * @subpackage Events
+ * Tests for Events and Dispatcher classes
+ *
+ * @package    SugiPHP.Events
  * @author     Plamen Popov <tzappa@gmail.com>
  * @license    http://opensource.org/licenses/mit-license.php (MIT License)
  */

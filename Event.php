@@ -1,9 +1,10 @@
 <?php
 /**
- * @package    SugiPHP
- * @subpackage Events
- * @author     Plamen Popov <tzappa@gmail.com>
- * @license    http://opensource.org/licenses/mit-license.php (MIT License)
+ * Event class. The dispatcher dispatches events of this class.
+ *
+ * @package SugiPHP.Events
+ * @author  Plamen Popov <tzappa@gmail.com>
+ * @license http://opensource.org/licenses/mit-license.php (MIT License)
  */
 
 namespace SugiPHP\Events;
@@ -65,7 +66,8 @@ class Event implements EventInterface, \ArrayAccess
 	/**
 	 * Sets the Dispatcher that dispatches this Event
 	 *
-	 * @param  Dispatcher $dispatcher
+	 * @param Dispatcher $dispatcher
+	 *
 	 * @return Event
 	 */
 	public function setDispatcher(Dispatcher $dispatcher)
@@ -78,7 +80,8 @@ class Event implements EventInterface, \ArrayAccess
 	/**
 	 * Bind some parameters to the Event.
 	 *
-	 * @param  array $params
+	 * @param array $params
+	 *
 	 * @return Event
 	 */
 	public function setParams(array $params)
@@ -101,8 +104,9 @@ class Event implements EventInterface, \ArrayAccess
 	/**
 	 * Binds a param to the Event.
 	 *
-	 * @param  string $name
-	 * @param  mixed $value
+	 * @param string $name
+	 * @param mixed $value
+	 *
 	 * @return Event
 	 */
 	public function setParam($name, $value)
@@ -115,7 +119,8 @@ class Event implements EventInterface, \ArrayAccess
 	/**
 	 * Return named parameter binded to the Event.
 	 *
-	 * @param  string $name
+	 * @param string $name
+	 *
 	 * @return mixed
 	 */
 	public function getParam($name)
@@ -123,11 +128,11 @@ class Event implements EventInterface, \ArrayAccess
 		return isset($this->params[$name]) ? $this->params[$name] : null;
 	}
 
-
-	/*
-	 * ArrayAccess implementation
+	/**
+	 * Method needed to implement \ArrayAccess
+	 *
+	 * @see http://php.net/manual/en/arrayaccess.offsetset.php
 	 */
-
 	public function offsetSet($offset, $value)
 	{
 		if (is_null($offset)) {
@@ -137,16 +142,31 @@ class Event implements EventInterface, \ArrayAccess
 		}
 	}
 
+	/**
+	 * Method needed to implement \ArrayAccess
+	 *
+	 * @see http://php.net/manual/en/arrayaccess.offsetexists.php
+	 */
 	public function offsetExists($offset)
 	{
 		return isset($this->params[$offset]);
 	}
 
+	/**
+	 * Method needed to implement \ArrayAccess
+	 *
+	 * @see http://php.net/manual/en/arrayaccess.offsetunset.php
+	 */
 	public function offsetUnset($offset)
 	{
 		unset($this->params[$offset]);
 	}
 
+	/**
+	 * Method needed to implement \ArrayAccess
+	 *
+	 * @see http://php.net/manual/en/arrayaccess.offsetget.php
+	 */
 	public function offsetGet($offset)
 	{
 		return isset($this->params[$offset]) ? $this->params[$offset] : null;

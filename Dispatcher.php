@@ -1,9 +1,10 @@
 <?php
 /**
- * @package    SugiPHP
- * @subpackage Events
- * @author     Plamen Popov <tzappa@gmail.com>
- * @license    http://opensource.org/licenses/mit-license.php (MIT License)
+ * Events Dispatcher.
+ *
+ * @package SugiPHP.Events
+ * @author  Plamen Popov <tzappa@gmail.com>
+ * @license http://opensource.org/licenses/mit-license.php (MIT License)
  */
 
 namespace SugiPHP\Events;
@@ -44,7 +45,8 @@ class Dispatcher
 	/**
 	 * Gets the listeners of a given event or all listeners.
 	 *
-	 * @param  string $eventName
+	 * @param string $eventName
+	 *
 	 * @return array
 	 */
 	public function getListeners($eventName = null)
@@ -63,7 +65,8 @@ class Dispatcher
 	/**
 	 * Checks event has any registered listeners.
 	 *
-	 * @param  string $eventName
+	 * @param string $eventName
+	 *
 	 * @return boolean
 	 */
 	public function hasListeners($eventName = null)

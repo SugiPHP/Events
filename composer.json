@@ -17,6 +17,5 @@
         "psr-4": {
             "SugiPHP\\Events\\": ""
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
