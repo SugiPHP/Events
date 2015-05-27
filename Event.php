@@ -11,164 +11,165 @@ namespace SugiPHP\Events;
 
 class Event implements EventInterface, \ArrayAccess
 {
-	/**
-	 * Event name
-	 * @var string
-	 */
-	protected $name;
+    /**
+     * Event name.
+     *
+     * @var string
+     */
+    protected $name;
 
-	/**
-	 * Dispatcher who handles event firing.
-	 *
-	 * @var \SugiPHP\Events\Dispatcher
-	 */
-	protected $dispatcher;
+    /**
+     * Dispatcher who handles event firing.
+     *
+     * @var \SugiPHP\Events\Dispatcher
+     */
+    protected $dispatcher;
 
-	/**
-	 * Some parameters to store in the event.
-	 *
-	 * @var array
-	 */
-	protected $params;
+    /**
+     * Some parameters to store in the event.
+     *
+     * @var array
+     */
+    protected $params;
 
-	/**
-	 * Event constructor.
-	 *
-	 * @param string $eventName
-	 * @param array $params
-	 */
-	public function __construct($eventName, array $params = array())
-	{
-		$this->name = $eventName;
-		$this->params = $params;
-	}
+    /**
+     * Event constructor.
+     *
+     * @param string $eventName
+     * @param array $params
+     */
+    public function __construct($eventName, array $params = array())
+    {
+        $this->name = $eventName;
+        $this->params = $params;
+    }
 
-	/**
-	 * Gets event name.
-	 *
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
+    /**
+     * Gets event name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * Gets the Dispatcher that dispatches this Event
-	 *
-	 * @return Dispatcher
-	 */
-	public function getDispatcher()
-	{
-		return $this->dispatcher;
-	}
+    /**
+     * Gets the Dispatcher that dispatches this Event
+     *
+     * @return Dispatcher
+     */
+    public function getDispatcher()
+    {
+        return $this->dispatcher;
+    }
 
-	/**
-	 * Sets the Dispatcher that dispatches this Event
-	 *
-	 * @param Dispatcher $dispatcher
-	 *
-	 * @return Event
-	 */
-	public function setDispatcher(Dispatcher $dispatcher)
-	{
-		$this->dispatcher = $dispatcher;
+    /**
+     * Sets the Dispatcher that dispatches this Event
+     *
+     * @param Dispatcher $dispatcher
+     *
+     * @return Event
+     */
+    public function setDispatcher(Dispatcher $dispatcher)
+    {
+        $this->dispatcher = $dispatcher;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Bind some parameters to the Event.
-	 *
-	 * @param array $params
-	 *
-	 * @return Event
-	 */
-	public function setParams(array $params)
-	{
-		$this->params = $params;
+    /**
+     * Bind some parameters to the Event.
+     *
+     * @param array $params
+     *
+     * @return Event
+     */
+    public function setParams(array $params)
+    {
+        $this->params = $params;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Return all parameters binded to the Event.
-	 *
-	 * @return array
-	 */
-	public function getParams()
-	{
-		return $this->params;
-	}
+    /**
+     * Return all parameters binded to the Event.
+     *
+     * @return array
+     */
+    public function getParams()
+    {
+        return $this->params;
+    }
 
-	/**
-	 * Binds a param to the Event.
-	 *
-	 * @param string $name
-	 * @param mixed $value
-	 *
-	 * @return Event
-	 */
-	public function setParam($name, $value)
-	{
-		$this->params[$name] = $value;
+    /**
+     * Binds a param to the Event.
+     *
+     * @param string $name
+     * @param mixed $value
+     *
+     * @return Event
+     */
+    public function setParam($name, $value)
+    {
+        $this->params[$name] = $value;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Return named parameter binded to the Event.
-	 *
-	 * @param string $name
-	 *
-	 * @return mixed
-	 */
-	public function getParam($name)
-	{
-		return isset($this->params[$name]) ? $this->params[$name] : null;
-	}
+    /**
+     * Return named parameter binded to the Event.
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function getParam($name)
+    {
+        return isset($this->params[$name]) ? $this->params[$name] : null;
+    }
 
-	/**
-	 * Method needed to implement \ArrayAccess
-	 *
-	 * @see http://php.net/manual/en/arrayaccess.offsetset.php
-	 */
-	public function offsetSet($offset, $value)
-	{
-		if (is_null($offset)) {
-			$this->params[] = $value;
-		} else {
-			$this->params[$offset] = $value;
-		}
-	}
+    /**
+     * Method needed to implement \ArrayAccess
+     *
+     * @see http://php.net/manual/en/arrayaccess.offsetset.php
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->params[] = $value;
+        } else {
+            $this->params[$offset] = $value;
+        }
+    }
 
-	/**
-	 * Method needed to implement \ArrayAccess
-	 *
-	 * @see http://php.net/manual/en/arrayaccess.offsetexists.php
-	 */
-	public function offsetExists($offset)
-	{
-		return isset($this->params[$offset]);
-	}
+    /**
+     * Method needed to implement \ArrayAccess
+     *
+     * @see http://php.net/manual/en/arrayaccess.offsetexists.php
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->params[$offset]);
+    }
 
-	/**
-	 * Method needed to implement \ArrayAccess
-	 *
-	 * @see http://php.net/manual/en/arrayaccess.offsetunset.php
-	 */
-	public function offsetUnset($offset)
-	{
-		unset($this->params[$offset]);
-	}
+    /**
+     * Method needed to implement \ArrayAccess
+     *
+     * @see http://php.net/manual/en/arrayaccess.offsetunset.php
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->params[$offset]);
+    }
 
-	/**
-	 * Method needed to implement \ArrayAccess
-	 *
-	 * @see http://php.net/manual/en/arrayaccess.offsetget.php
-	 */
-	public function offsetGet($offset)
-	{
-		return isset($this->params[$offset]) ? $this->params[$offset] : null;
-	}
+    /**
+     * Method needed to implement \ArrayAccess
+     *
+     * @see http://php.net/manual/en/arrayaccess.offsetget.php
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->params[$offset]) ? $this->params[$offset] : null;
+    }
 }

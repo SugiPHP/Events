@@ -12,10 +12,10 @@ namespace SugiPHP\Events;
 interface EventInterface
 {
 
-	/**
-	 * Gets the name of the Event.
-	 *
-	 * @return string
-	 */
-	public function getName();
+    /**
+     * Gets the name of the Event.
+     *
+     * @return string
+     */
+    public function getName();
 }
