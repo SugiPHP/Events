@@ -13,7 +13,7 @@ use SugiPHP\Events\Dispatcher;
 use SugiPHP\Events\Event;
 use PHPUnit_Framework_TestCase;
 
-class EventsTests extends PHPUnit_Framework_TestCase
+class EventsTest extends PHPUnit_Framework_TestCase
 {
 
     public $eventsDispatched;

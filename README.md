@@ -1,14 +1,13 @@
 # Events
 
 [![Build Status](https://travis-ci.org/SugiPHP/Events.png)](https://travis-ci.org/SugiPHP/Events)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/SugiPHP/Events/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/SugiPHP/Events/?branch=master)
 
 Observer design pattern-like events system.
 
 ## Installation
 
-```bash
-composer require sugiphp/container ~1.0
+```shell
+composer require sugiphp/events ~1.0
 ```
 
 ## Usage
@@ -30,15 +29,13 @@ Dispatcher have most significant role in the events systems. All events are fire
 listeners that are registered with that event and notifies them.
 
 ```php
-<?php
-	// create a dispatcher
-	$dispatcher = new Dispatcher();
-	// register one or more listeners for one or more events
-	$dispatcher->addListener("user.login", function ($event) {
-		// this function will be executed when an event with name "user.login" is fired
-	});
+// create a dispatcher
+$dispatcher = new Dispatcher();
+// register one or more listeners for one or more events
+$dispatcher->addListener("user.login", function ($event) {
+    // this function will be executed when an event with name "user.login" is fired
+});
 
-	// fires an event
-	$dispatcher->dispatch(new Event("user.login"));
-?>
+// fires an event
+$dispatcher->dispatch(new Event("user.login"));
 ```
