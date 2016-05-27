@@ -55,30 +55,6 @@ class Event implements EventInterface, \ArrayAccess
     }
 
     /**
-     * Gets the Dispatcher that dispatches this Event
-     *
-     * @return Dispatcher
-     */
-    public function getDispatcher()
-    {
-        return $this->dispatcher;
-    }
-
-    /**
-     * Sets the Dispatcher that dispatches this Event
-     *
-     * @param Dispatcher $dispatcher
-     *
-     * @return Event
-     */
-    public function setDispatcher(Dispatcher $dispatcher)
-    {
-        $this->dispatcher = $dispatcher;
-
-        return $this;
-    }
-
-    /**
      * Bind some parameters to the Event.
      *
      * @param array $params
@@ -127,6 +103,19 @@ class Event implements EventInterface, \ArrayAccess
     public function getParam($name)
     {
         return isset($this->params[$name]) ? $this->params[$name] : null;
+    }
+
+    /**
+     * Returns true if the event has and entry for the given identifier.
+     * Returns false otherwise.
+     *
+     * @param string $name
+     *
+     * @return boolean
+     */
+    public function hasParam($name)
+    {
+        return isset($this->params[$name]);
     }
 
     /**

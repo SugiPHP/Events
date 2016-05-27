@@ -22,10 +22,6 @@ class EventsTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        if (version_compare(PHP_VERSION, "5.4.0") < 0) {
-            $this->markTestSkipped("EventsTest requires PHP version >= 5.4");
-        }
-
         $this->eventsDispatched = 0;
         $this->dispatcher = new Dispatcher();
         $this->event = new Event("unit.test");
@@ -104,5 +100,47 @@ class EventsTest extends PHPUnit_Framework_TestCase
         $this->dispatcher->dispatch($event);
         // check that the event was dispatched
         $this->assertEquals(1, $this->eventsDispatched);
+    }
+
+    public function testHasEventListener()
+    {
+        // creating listener
+        $this->dispatcher->addListener("unit.test", function ($e) {
+            return true;
+        });
+
+        $this->assertTrue($this->dispatcher->hasListeners("unit.test"));
+        $this->assertFalse($this->dispatcher->hasListeners("foo"));
+    }
+
+    public function testGetEventParam()
+    {
+        $event = new Event("unit.test", array("foo", "bar" => "foobar"));
+        $this->assertEquals("foobar", $event->getParam("bar"));
+    }
+
+    public function testGetEventParams()
+    {
+        $params = array("foo", "bar" => "foobar");
+        $event = new Event("unit.test", $params);
+        $this->assertEquals($params, $event->getParams());
+    }
+
+    public function testEventHasParam()
+    {
+        $params = array("user" => "demo");
+        $event = new Event("unit.test", $params);
+        $this->assertTrue($event->hasParam("user"));
+        $this->assertFalse($event->hasParam("admin"));
+    }
+
+    public function testArrayAccessToParams()
+    {
+        $params = array("username" => "demo", "id" => 1);
+        $event = new Event("user.login", $params);
+        $this->assertEquals("demo", $event["username"]);
+        $this->assertEquals(1, $event["id"]);
+        $this->assertTrue(isset($event["username"]));
+        $this->assertFalse(isset($event["state"]));
     }
 }

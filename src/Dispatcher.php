@@ -43,18 +43,14 @@ class Dispatcher
     }
 
     /**
-     * Gets the listeners of a given event or all listeners.
+     * Gets the listeners for a given event.
      *
      * @param string $eventName
      *
      * @return array
      */
-    public function getListeners($eventName = null)
+    public function getListeners($eventName)
     {
-        if (is_null($eventName)) {
-            return $this->listeners;
-        }
-
         if (isset($this->listeners[$eventName])) {
             return $this->listeners[$eventName];
         }
@@ -69,7 +65,7 @@ class Dispatcher
      *
      * @return boolean
      */
-    public function hasListeners($eventName = null)
+    public function hasListeners($eventName)
     {
         return (boolean) count($this->getListeners($eventName));
     }
