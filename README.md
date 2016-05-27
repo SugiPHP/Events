@@ -39,3 +39,21 @@ $dispatcher->addListener("user.login", function ($event) {
 // fires an event
 $dispatcher->dispatch(new Event("user.login"));
 ```
+
+### Passing data
+
+All listeners should have only one parameter - the event. If we need to pass additional info to those functions we can transport the date with the Event.
+
+```php
+
+$dispatcher->addListener("user.login", function ($event) {
+    // get one property
+    echo $event->getParam("id"); // 1
+    // get a property as Array
+    echo $event["username"]; // "demo"
+    // fetch all data
+    $event->getParams(); // array("id" => 1, "username" => "demo")
+});
+$event = new Event("user.login", array("id" => 1, "username" => "demo"));
+$dispatcher->dispatch($event);
+```
