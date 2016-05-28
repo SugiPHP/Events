@@ -143,4 +143,24 @@ class EventsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(isset($event["username"]));
         $this->assertFalse(isset($event["state"]));
     }
+
+    public function testReadmeExample()
+    {
+        $this->dispatcher->addListener("user.login", function ($event) {
+            if ("mike" == $event["username"]) {
+                // array access
+                $event["is_admin"] = true;
+            } else {
+                // using setParam() method
+                $event->setParam("is_admin", false);
+            }
+        });
+
+        $this->dispatcher->addListener("user.login", function ($event) {
+            $this->assertTrue($event["is_admin"]);
+        });
+
+        $event = new Event("user.login", array("username" => "mike"));
+        $this->dispatcher->dispatch($event);
+    }
 }

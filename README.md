@@ -45,7 +45,6 @@ $dispatcher->dispatch(new Event("user.login"));
 All listeners should have only one parameter - the event. If we need to pass additional info to those functions we can transport the date with the Event.
 
 ```php
-
 $dispatcher->addListener("user.login", function ($event) {
     // get one property
     echo $event->getParam("id"); // 1
@@ -56,4 +55,29 @@ $dispatcher->addListener("user.login", function ($event) {
 });
 $event = new Event("user.login", array("id" => 1, "username" => "demo"));
 $dispatcher->dispatch($event);
+```
+
+You might need to exchange data between one listener and another. You can do that by adding and altering the data in the event with `setParam()` method.
+
+```php
+$dispatcher->addListener("user.login", function ($event) {
+    if ("mike" == $event["username"]) {
+        // array access
+        $event["is_admin"] = true;
+    } else {
+        // using setParam() method
+        $event->setParam("is_admin", false);
+    }
+});
+
+$dispatcher->addListener("user.login", function ($event) {
+    if ($event["is_admin"]) {
+        echo "Hello Admin";
+    }
+});
+
+$event = new Event("user.login", array("username" => "mike"));
+$dispatcher->dispatch($event);
+
+
 ```
