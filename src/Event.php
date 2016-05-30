@@ -119,9 +119,11 @@ class Event implements EventInterface, \ArrayAccess
     }
 
     /**
-     * Method needed to implement \ArrayAccess
-     *
+     * Assigns a value to the specified offset
      * @see http://php.net/manual/en/arrayaccess.offsetset.php
+     *
+     * @param string The offset to assign the value to
+     * @param mixed  The value to set
      */
     public function offsetSet($offset, $value)
     {
@@ -133,32 +135,41 @@ class Event implements EventInterface, \ArrayAccess
     }
 
     /**
-     * Method needed to implement \ArrayAccess
-     *
+     * Whether or not an offset exists
      * @see http://php.net/manual/en/arrayaccess.offsetexists.php
+     *
+     * @param string An offset to check for
+     * @return boolean
      */
     public function offsetExists($offset)
     {
+
         return isset($this->params[$offset]);
     }
 
     /**
-     * Method needed to implement \ArrayAccess
-     *
+     * Unsets an offset
      * @see http://php.net/manual/en/arrayaccess.offsetunset.php
+     *
+     * @param string The offset to unset
      */
     public function offsetUnset($offset)
     {
-        unset($this->params[$offset]);
+        if ($this->offsetExists($offset)) {
+            unset($this->params[$offset]);
+        }
     }
 
     /**
-     * Method needed to implement \ArrayAccess
-     *
+     * Returns the value at specified offset
      * @see http://php.net/manual/en/arrayaccess.offsetget.php
+     *
+     * @param string The offset to retrieve
+     *
+     * @return mixed
      */
     public function offsetGet($offset)
     {
-        return isset($this->params[$offset]) ? $this->params[$offset] : null;
+        return $this->offsetExists($offset) ? $this->params[$offset] : null;
     }
 }
