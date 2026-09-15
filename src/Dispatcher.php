@@ -1,72 +1,40 @@
 <?php
-/**
- * Events Dispatcher.
- *
- * @package SugiPHP.Events
- * @author  Plamen Popov <tzappa@gmail.com>
- * @license http://opensource.org/licenses/mit-license.php (MIT License)
- */
+
+declare(strict_types=1);
 
 namespace SugiPHP\Events;
 
-class Dispatcher
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\ListenerProviderInterface;
+use Psr\EventDispatcher\StoppableEventInterface;
+
+/**
+ * Dispatches events to all registered listeners.
+ */
+class Dispatcher implements EventDispatcherInterface
 {
-    /**
-     * All registered event listeners.
-     *
-     * @var array
-     */
-    protected $listeners = array();
-
-    /**
-     * Notifies registered for that event callback function
-     *
-     * @param Event $event
-     */
-    public function dispatch(EventInterface $event)
+    public function __construct(private ListenerProviderInterface $provider)
     {
-        $eventName = $event->getName();
-        foreach ($this->getListeners($eventName) as $listener) {
-            call_user_func($listener, $event);
-        }
     }
 
     /**
-     * Registers an event listener.
+     * Provide all relevant listeners with an event to process.
      *
-     * @param string $eventName
-     * @param callable $callback
+     * @param object $event The object to process.
+     *
+     * @return object The Event that was passed, now modified by listeners.
      */
-    public function addListener($eventName, $callback)
+    public function dispatch(object $event): object
     {
-        $this->listeners[$eventName][] = $callback;
-    }
+        $listeners = $this->provider->getListenersForEvent($event);
 
-    /**
-     * Gets the listeners for a given event.
-     *
-     * @param string $eventName
-     *
-     * @return array
-     */
-    public function getListeners($eventName)
-    {
-        if (isset($this->listeners[$eventName])) {
-            return $this->listeners[$eventName];
+        foreach ($listeners as $listener) {
+            if ($event instanceof StoppableEventInterface && $event->isPropagationStopped()) {
+                break;
+            }
+            $listener($event);
         }
 
-        return array();
-    }
-
-    /**
-     * Checks event has any registered listeners.
-     *
-     * @param string $eventName
-     *
-     * @return boolean
-     */
-    public function hasListeners($eventName)
-    {
-        return (boolean) count($this->getListeners($eventName));
+        return $event;
     }
 }

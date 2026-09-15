@@ -1,8 +1,7 @@
 {
     "name": "sugiphp/events",
     "type": "library",
-    "description": "Observer design pattern-like events system",
-    "keywords": ["observer", "event", "dispatcher"],
+    "description": "PSR-14 Event Dispatcher",
     "license": "MIT",
     "authors": [
         {
@@ -11,11 +10,23 @@
         }
     ],
     "require": {
-        "php": ">=5.5"
+        "php": ">=8.3",
+        "psr/event-dispatcher": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
     },
     "autoload": {
         "psr-4": {
             "SugiPHP\\Events\\": "src"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SugiPHP\\Events\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
     }
 }

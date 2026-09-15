@@ -1,83 +1,118 @@
-# Events
+# SugiPHP Events
 
-[![Build Status](https://travis-ci.org/SugiPHP/Events.png)](https://travis-ci.org/SugiPHP/Events)
+A minimal, dependency-light [PSR-14](https://www.php-fig.org/psr/psr-14/) event dispatcher for PHP 8.3+.
 
-Observer design pattern-like events system.
+It provides:
+
+- `Dispatcher` — a PSR-14 `EventDispatcherInterface` implementation that calls listeners in registration order and stops on [`StoppableEventInterface`](https://www.php-fig.org/psr/psr-14/#22-stoppableeventinterface).
+- `ListenerProvider` — a PSR-14 `ListenerProviderInterface` implementation that maps an event class (or any of its parent classes / interfaces) to the listeners registered for it.
+- `EventDispatcherTrait` — an optional trait to add dispatching capability to any class without requiring a hard dependency on `Dispatcher` in its constructor.
 
 ## Installation
 
-```shell
-composer require sugiphp/events ~1.0
+```bash
+composer require sugiphp/events ^2.0
 ```
 
-## Usage
-
-### Event
-
-Event is a simple object identified by it's unique name. When an event is fired the Event Dispatcher notifies registered
-listeners for that particular event name.
-
-### Listener
-
-Any function or method that takes no more than one argument can act as a listener. When an event is fired the dispatcher calls all
-registered listeners (functions) one by one.
-
-
-### Dispatcher
-
-Dispatcher have most significant role in the events systems. All events are fired via the dispatcher. The dispatcher checks for any
-listeners that are registered with that event and notifies them.
+## Basic usage
 
 ```php
-// create a dispatcher
-$dispatcher = new Dispatcher();
-// register one or more listeners for one or more events
-$dispatcher->addListener("user.login", function ($event) {
-    // this function will be executed when an event with name "user.login" is fired
+use SugiPHP\Events\Dispatcher;
+use SugiPHP\Events\ListenerProvider;
+
+$provider = new ListenerProvider();
+$provider->addListener(UserRegistered::class, function (UserRegistered $event) {
+    // send a welcome email, etc.
 });
 
-// fires an event
-$dispatcher->dispatch(new Event("user.login"));
-```
+$dispatcher = new Dispatcher($provider);
 
-### Passing data
-
-All listeners should have only one parameter - the event. If we need to pass additional info to those functions we can transport the date with the Event.
-
-```php
-$dispatcher->addListener("user.login", function ($event) {
-    // get one property
-    echo $event->getParam("id"); // 1
-    // get a property as Array
-    echo $event["username"]; // "demo"
-    // fetch all data
-    $event->getParams(); // array("id" => 1, "username" => "demo")
-});
-$event = new Event("user.login", array("id" => 1, "username" => "demo"));
+$event = new UserRegistered($user);
 $dispatcher->dispatch($event);
 ```
 
-You might need to exchange data between one listener and another. You can do that by adding and altering the data in the event with `setParam()` method.
+Any PHP object can be used as an event — there is no base `Event` class or interface to extend.
+
+## Registering listeners
+
+`ListenerProvider::addListener()` takes an event class (or interface) name and any PHP `callable`:
 
 ```php
-$dispatcher->addListener("user.login", function ($event) {
-    if ("mike" == $event["username"]) {
-        // array access
-        $event["is_admin"] = true;
-    } else {
-        // using setParam() method
-        $event->setParam("is_admin", false);
-    }
-});
-
-$dispatcher->addListener("user.login", function ($event) {
-    if ($event["is_admin"]) {
-        echo "Hello Admin";
-    }
-});
-
-$event = new Event("user.login", array("username" => "mike"));
-$dispatcher->dispatch($event);
-
-
+$provider->addListener(UserRegistered::class, new SendWelcomeEmail());
+$provider->addListener(UserRegistered::class, [$logger, 'logRegistration']);
+$provider->addListener(UserRegistered::class, 'notify_admins');
 ```
+
+Listeners are invoked in the order they were registered. Registering against a parent class or
+an interface matches every event that `instanceof` that type:
+
+```php
+interface DomainEvent {}
+class UserRegistered implements DomainEvent {}
+
+// Fires for UserRegistered and any other DomainEvent implementation.
+$provider->addListener(DomainEvent::class, $auditLogger);
+```
+
+## Stopping propagation
+
+Events that implement `Psr\EventDispatcher\StoppableEventInterface` can stop remaining listeners
+from being called:
+
+```php
+use Psr\EventDispatcher\StoppableEventInterface;
+
+class UserRegistered implements StoppableEventInterface
+{
+    private bool $stopped = false;
+
+    public function isPropagationStopped(): bool
+    {
+        return $this->stopped;
+    }
+
+    public function stopPropagation(): void
+    {
+        $this->stopped = true;
+    }
+}
+```
+
+Once a listener calls `stopPropagation()`, `Dispatcher::dispatch()` stops calling any further
+listeners and returns the event as-is.
+
+## Using the trait
+
+`EventDispatcherTrait` lets a class expose a `dispatch()` method without requiring a `Dispatcher`
+to be injected through its constructor. If no dispatcher has been set, `dispatch()` is a no-op
+that returns the event unchanged.
+
+```php
+use SugiPHP\Events\Dispatcher;
+use SugiPHP\Events\EventDispatcherTrait;
+use Psr\EventDispatcher\EventDispatcherInterface;
+
+class UserService implements EventDispatcherInterface
+{
+    use EventDispatcherTrait;
+}
+
+$service = new UserService();
+$service->setEventDispatcher(new Dispatcher($provider));
+$service->dispatch(new UserRegistered($user));
+```
+
+## Requirements
+
+- PHP >= 8.3
+- [psr/event-dispatcher](https://packagist.org/packages/psr/event-dispatcher) ^1.0
+
+## Testing
+
+```bash
+composer test
+```
+
+## License
+
+MIT
